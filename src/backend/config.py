@@ -6,6 +6,8 @@ load_dotenv()
 
 # API Keys
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+if not GOOGLE_API_KEY:
+    raise RuntimeError("GOOGLE_API_KEY not found in environment variables")
 
 # Video processing settings
 FRAME_INTERVAL = 5  # Extract a frame every 5 seconds
