@@ -54,21 +54,7 @@ def analyze_video():
         video_url = data['video_url']
         logger.info(f"Processing video URL: {video_url}")
         
-        # Mock response for testing (uncomment to bypass actual processing)
-        # logger.info("Returning mock response for testing")
-        # return jsonify({
-        #     "summary": "Mock summary for testing",
-        #     "detailed_analysis": {
-        #         "gemini": {
-        #             "summary": "Mock detailed summary",
-        #             "key_objects": "Mock key objects",
-        #             "scene_details": "Mock scene details",
-        #             "notable_actions": "Mock notable actions",
-        #             "technical_observations": "Mock technical observations"
-        #         }
-        #     }
-        # })
-        
+                
         # Process video
         logger.info("Downloading video...")
         video_path = download_video(video_url)
@@ -127,77 +113,3 @@ if __name__ == '__main__':
 
 
 
-
-
-
-
-# from flask import Flask, request, jsonify
-# from flask_cors import CORS
-# import os
-# import logging
-# from services.video_service import download_video, extract_frames, extract_audio
-# from services.gemini_service import analyze_video_with_gemini
-
-# # Configure logging
-# logging.basicConfig(level=logging.INFO)
-# logger = logging.getLogger(__name__)
-
-# app = Flask(__name__)
-# CORS(app)  # Enable CORS for all routes
-
-# @app.route('/api/health', methods=['GET'])
-# def health_check():
-#     """Health check endpoint."""
-#     return jsonify({"status": "ok"})
-
-# @app.route('/api/analyze', methods=['POST'])
-# def analyze_video():
-#     """Endpoint to analyze a video from a URL."""
-#     try:
-#         data = request.get_json()
-        
-#         if not data or 'video_url' not in data:
-#             return jsonify({"error": "Missing video_url parameter"}), 400            
-#         video_url = data['video_url']
-#         logger.info(f"Received analysis request for video: {video_url}")
-        
-#         # Process video
-#         video_path = download_video(video_url)
-#         frames = extract_frames(video_path)
-#         audio_path = extract_audio(video_path)
-        
-#         # Google Gemini for scene understanding
-#         gemini_analysis = analyze_video_with_gemini(frames)
-        
-#         # Clean up temporary files
-#         if os.path.exists(video_path):
-#             os.remove(video_path)
-#         if os.path.exists(audio_path):
-#             os.remove(audio_path)
-            
-#         # Compile results
-#         results = {
-#             "summary": gemini_analysis["summary"],
-#             "detailed_analysis": {
-#                 "gemini": gemini_analysis,
-#             }
-#         }
-        
-#         logger.info("Analysis completed successfully, returning results")    
-#         return jsonify(results)
-        
-#     except Exception as e:
-#         logger.error(f"Error in API: {str(e)}")
-#         return jsonify({"error": str(e)}), 500
-
-# def handle_api_error(e):
-#     """Handle API errors with appropriate responses."""
-#     logger.error(f"API error: {str(e)}")
-#     return jsonify({"error": str(e)}), 500
-
-# if __name__ == '__main__':
-#     # Ensure temp directories exist
-#     for directory in ["temp_videos", "temp_frames", "temp_audio"]:
-#         os.makedirs(directory, exist_ok=True)
-        
-#     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
